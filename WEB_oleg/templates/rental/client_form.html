@@ -12,5 +12,15 @@
         <button type="submit">Сохранить</button>
     </form>
     <a href="{% url 'client_list' %}">Отмена</a>
+    <script>
+        $(document).ready(function(){
+            $('#id_birthday').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+                minuteStep: 1
+            });
+        });
+    </script>
 </body>
 </html>

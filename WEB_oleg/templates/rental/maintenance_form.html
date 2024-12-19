@@ -12,5 +12,22 @@
         <button type="submit">Сохранить</button>
     </form>
     <a href="{% url 'maintenance_list' %}">Отмена</a>
+
+    <script>
+        $(document).ready(function(){
+            $('#id_start').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+                minuteStep: 1
+            });
+            $('#id_end').datepicker({
+                format: 'yyyy-mm-dd',
+                autoclose: true,
+                todayHighlight: true,
+                minuteStep: 1
+            });
+        });
+    </script>
 </body>
 </html>
