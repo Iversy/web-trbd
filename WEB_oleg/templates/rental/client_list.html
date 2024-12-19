@@ -1,0 +1,13 @@
+<h1>Список клиентов</h1>
+<a href="{% url 'client_create' %}">Добавить клиента</a>
+<ul>
+    {% for client in clients %}
+        <li>
+            {{ client.name }} - <a href="{% url 'client_update' client.pk %}">Редактировать</a>
+            <form action="{% url 'client_delete' client.pk %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="submit" value="Удалить">
+            </form>
+        </li>
+    {% endfor %}
+</ul>
