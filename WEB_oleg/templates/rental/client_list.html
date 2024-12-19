@@ -1,4 +1,8 @@
 <h1>Список клиентов</h1>
+<form method="get">
+    <input type="text" name="q" placeholder="Поиск по имени" value="{{ request.GET.q }}">
+    <button type="submit">Поиск</button>
+</form>
 <a href="{% url 'client_create' %}">Добавить клиента</a>
 <ul>
     {% for client in clients %}

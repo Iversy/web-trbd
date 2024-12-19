@@ -1,7 +1,16 @@
-<h1>{% if form.instance.pk %}Редактировать клиента{% else %}Добавить клиента{% endif %}</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}  <!-- Отображаем форму -->
-    <button type="submit">Сохранить</button>
-</form>
-<a href="{% url 'client_list' %}">Назад к списку клиентов</a>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{% if form.instance.pk %}Редактировать клиента{% else %}Создать клиента{% endif %}</title>
+</head>
+<body>
+    <h1>{% if form.instance.pk %}Редактировать клиента{% else %}Создать клиента{% endif %}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Сохранить</button>
+    </form>
+    <a href="{% url 'client_list' %}">Отмена</a>
+</body>
+</html>

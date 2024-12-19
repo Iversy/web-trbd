@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список автомобилей</title>
+</head>
+<body>
+    <h1>Список автомобилей</h1>
+    <a href="{% url 'car_create' %}">Создать новый автомобиль</a>
+    <form method="GET">
+        <input type="text" name="q" placeholder="Поиск автомобилей...">
+        <button type="submit">Поиск</button>
+    </form>
+    <ul>
+        {% for car in cars %}
+            <li>
+                {{ car.model }} - <a href="{% url 'car_update' car.pk %}">Редактировать</a> - 
+                <a href="{% url 'car_delete' car.pk %}">Удалить</a>
+            </li>
+        {% empty %}
+            <li>Автомобили не найдены.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

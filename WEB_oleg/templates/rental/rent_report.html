@@ -1,0 +1,25 @@
+<h1>Отчет по арендам</h1>
+<a href="{% url 'rent_report_csv' %}">Скачать отчет в формате CSV</a>
+<table>
+    <thead>
+        <tr>
+            <th>Клиент</th>
+            <th>Автомобиль</th>
+            <th>Дата начала</th>
+            <th>Дата окончания</th>
+            <th>Цена</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for rent in rents %}
+            <tr>
+                <td>{{ rent.client.name }}</td>
+                <td>{{ rent.car.model }}</td>
+                <td>{{ rent.start }}</td>
+                <td>{{ rent.end }}</td>
+                <td>{{ rent.price }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'client_list' %}">Назад к списку клиентов</a>

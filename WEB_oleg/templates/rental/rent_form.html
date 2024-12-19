@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% block title %}Создать аренду{% endblock %}
+
+{% block content %}
+<h1>{% if form.instance.pk %}Редактировать аренду{% else %}Создать аренду{% endif %}</h1>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+    <a href="{% url 'rent_list' %}" class="btn btn-secondary">Отмена</a>
+
+    <script>
+        $(document).ready(function(){
+            $('#id_start').datepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                autoclose: true,
+                todayHighlight: true,
+                minuteStep: 1
+            });
+            $('#id_end').datepicker({
+                format: 'yyyy-mm-dd hh:ii',
+                autoclose: true,
+                todayHighlight: true,
+                minuteStep: 1
+            });
+        });
+    </script>
+{% endblock %}

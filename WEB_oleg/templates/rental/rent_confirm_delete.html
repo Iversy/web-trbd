@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Удалить аренду</title>
+</head>
+<body>
+    <h1>Удалить аренду</h1>
+    <p>Вы уверены, что хотите удалить аренду клиента "{{ rent.client.name }}" на автомобиль "{{ rent.car.model }}"?</p>
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit">Подтвердить удаление</button>
+    </form>
+    <a href="{% url 'rent_list' %}">Отмена</a>
+</body>
+</html>

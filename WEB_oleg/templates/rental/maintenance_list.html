@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список обслуживания</title>
+</head>
+<body>
+    <h1>Список обслуживания</h1>
+    <a href="{% url 'maintenance_create' %}">Создать новое обслуживание</a>
+    <form method="GET">
+        <input type="text" name="q" placeholder="Поиск обслуживания...">
+        <button type="submit">Поиск</button>
+    </form>
+    <ul>
+        {% for maintenance in maintenances %}
+            <li>
+                {{ maintenance.car.model }} - {{ maintenance.service.name }} - <a href="{% url 'maintenance_update' maintenance.pk %}">Редактировать</a> - 
+                <a href="{% url 'maintenance_delete' maintenance.pk %}">Удалить</a>
+            </li>
+        {% empty %}
+            <li>Обслуживания не найдены.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

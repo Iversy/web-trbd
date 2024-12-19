@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Список аренды</title>
+</head>
+<body>
+    <h1>Список аренды</h1>
+    <a href="{% url 'rent_create' %}">Создать новую аренду</a>
+    <form method="GET">
+        <input type="text" name="q" placeholder="Поиск аренды...">
+        <button type="submit">Поиск</button>
+    </form>
+    <ul>
+        {% for rent in rents %}
+            <li>
+                {{ rent.client.name }} - {{ rent.car.model }} - <a href="{% url 'rent_update' rent.pk %}">Редактировать</a> - 
+                <a href="{% url 'rent_delete' rent.pk %}">Удалить</a>
+            </li>
+        {% empty %}
+            <li>Аренды не найдены.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
