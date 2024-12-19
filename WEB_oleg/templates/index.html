@@ -1,16 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index Page</title>
-</head>
-<body>
-    <h1>Available Links</h1>
-    <ul>
-        {% for name, pattern in urls %}
-            <li><a href="{% url name %}">{{ name }}</a></li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block title %} Главная {% endblock %}
+{% block content %}
+<h1>Ссылки</h1>
+<ul>
+    <li><a href="{% url 'client_list' %}">client_list</a></li>
+    <li><a href="{% url 'rent_report' %}">rent_report</a></li>
+    <li><a href="{% url 'rent_report_csv' %}">rent_report_csv</a></li>
+    <li><a href="{% url 'home' %}">home</a></li>
+    <li><a href="{% url 'car_list' %}">car_list</a></li>
+    <li><a href="{% url 'service_list' %}">service_list</a></li>
+    <li><a href="{% url 'rent_list' %}">rent_list</a></li>
+    <li><a href="{% url 'maintenance_list' %}">maintenance_list</a></li>
+
+
+</ul>
+{% endblock %}
+

@@ -8,7 +8,7 @@ def get_all_urls():
         for pattern in patterns:
             if isinstance(pattern, URLPattern):
                 if pattern.name:  # Check if the pattern has a name
-                    urls.append((pattern.name, pattern.pattern))
+                    urls.append(pattern.name)
             elif isinstance(pattern, URLResolver):
                 extract_urls(pattern.url_patterns)
 

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Создать аренду{% endblock %}
+{% block title %}{% if form.instance.pk %}Редактировать аренду{% else %}Создать аренду{% endif %}{% endblock %}
 
 {% block content %}
 <h1>{% if form.instance.pk %}Редактировать аренду{% else %}Создать аренду{% endif %}</h1>

@@ -7,10 +7,10 @@
 <body>
     <h1>Список услуг</h1>
     <a href="{% url 'service_create' %}">Создать новую услугу</a>
-    <form method="GET">
-        <input type="text" name="q" placeholder="Поиск услуг...">
-        <button type="submit">Поиск</button>
-    </form>
+    <form method="get">
+    <input type="text" name="q" placeholder="Поиск услуг" value="{{ request.GET.q }}">
+    <button type="submit">Поиск</button>
+</form>
     <ul>
         {% for service in services %}
             <li>
@@ -21,5 +21,6 @@
             <li>Услуги не найдены.</li>
         {% endfor %}
     </ul>
+    <a href="{% url 'home' %}">Назад</a>
 </body>
 </html>

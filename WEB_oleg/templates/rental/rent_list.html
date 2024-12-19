@@ -7,10 +7,10 @@
 <body>
     <h1>Список аренды</h1>
     <a href="{% url 'rent_create' %}">Создать новую аренду</a>
-    <form method="GET">
-        <input type="text" name="q" placeholder="Поиск аренды...">
-        <button type="submit">Поиск</button>
-    </form>
+    <form method="get">
+    <input type="text" name="q" placeholder="Поиск аренды" value="{{ request.GET.q }}">
+    <button type="submit">Поиск</button>
+</form>
     <ul>
         {% for rent in rents %}
             <li>
@@ -21,5 +21,6 @@
             <li>Аренды не найдены.</li>
         {% endfor %}
     </ul>
+    <a href="{% url 'home' %}">Назад</a>
 </body>
 </html>

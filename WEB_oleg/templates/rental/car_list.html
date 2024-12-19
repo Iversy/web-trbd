@@ -7,10 +7,10 @@
 <body>
     <h1>Список автомобилей</h1>
     <a href="{% url 'car_create' %}">Создать новый автомобиль</a>
-    <form method="GET">
-        <input type="text" name="q" placeholder="Поиск автомобилей...">
-        <button type="submit">Поиск</button>
-    </form>
+    <form method="get">
+    <input type="text" name="q" placeholder="Поиск автомобилей" value="{{ request.GET.q }}">
+    <button type="submit">Поиск</button>
+</form>
     <ul>
         {% for car in cars %}
             <li>
@@ -21,5 +21,6 @@
             <li>Автомобили не найдены.</li>
         {% endfor %}
     </ul>
+    <a href="{% url 'home' %}">Назад</a>
 </body>
 </html>

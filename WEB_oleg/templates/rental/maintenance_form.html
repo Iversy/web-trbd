@@ -1,33 +1,30 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>{% if form.instance.pk %}Редактировать обслуживание{% else %}Создать обслуживание{% endif %}</title>
-</head>
-<body>
-    <h1>{% if form.instance.pk %}Редактировать обслуживание{% else %}Создать обслуживание{% endif %}</h1>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Сохранить</button>
-    </form>
-    <a href="{% url 'maintenance_list' %}">Отмена</a>
+{% extends 'base.html' %}
 
-    <script>
-        $(document).ready(function(){
-            $('#id_start').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                todayHighlight: true,
-                minuteStep: 1
-            });
-            $('#id_end').datepicker({
-                format: 'yyyy-mm-dd',
-                autoclose: true,
-                todayHighlight: true,
-                minuteStep: 1
-            });
+{% block title %}{% if form.instance.pk %}Редактировать обслуживание{% else %}Создать обслуживание{% endif %}{% endblock %}
+{% block content %}
+
+<h1>{% if form.instance.pk %}Редактировать обслуживание{% else %}Создать обслуживание{% endif %}</h1>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Сохранить</button>
+</form>
+<a href="{% url 'maintenance_list' %}">Отмена</a>
+
+<script>
+    $(document).ready(function(){
+        $('#id_start').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true,
+            minuteStep: 1
         });
-    </script>
-</body>
-</html>
+        $('#id_end').datepicker({
+            format: 'yyyy-mm-dd',
+            autoclose: true,
+            todayHighlight: true,
+            minuteStep: 1
+        });
+    });
+</script>
+{% endblock %}
