@@ -1,15 +1,14 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Список обслуживания</title>
-</head>
-<body>
+
+{% extends 'base.html' %}
+{% block title %}Список обслуживания{% endblock %}
+
+{% block content %}
     <h1>Список обслуживания</h1>
-    <a href="{% url 'maintenance_create' %}">Создать новое обслуживание</a>
-    <form method="get">
+<a href="{% url 'maintenance_table' %}" class="btn btn-primary">Таблица</a>
+<form method="get">
     <input type="text" name="q" placeholder="Поиск обслуживания" value="{{ request.GET.q }}">
     <button type="submit">Поиск</button>
+    <a href="{% url 'maintenance_create' %}">Создать новое обслуживание</a>
 </form>
     <ul>
         {% for maintenance in maintenances %}
@@ -22,5 +21,4 @@
         {% endfor %}
     </ul>
     <a href="{% url 'home' %}">Назад</a>
-</body>
-</html>
+{%endblock%}

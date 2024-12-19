@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Data List</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+    <a href="{% url 'home' %}" class="btn btn-secondary">Назад</a>
+        
+        {% if clients and maintenance and rents and services and cars%}
+        <h1 class="mt-5">All Data</h1>
+        {%endif%}
+        {% if clients %}
+        <h2 class="mt-4">Clients</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>License</th>
+                    <th>Birthday</th>
+                    <th>Phone</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for client in clients %}
+                <tr>
+                    <td>{{ client.name }}</td>
+                    <td>{{ client.license }}</td>
+                    <td>{{ client.birthday }}</td>
+                    <td>{{ client.phone }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {%endif%}
+        {% if cars %}
+        <h2 class="mt-4">Cars</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Year</th>
+                    <th>Color</th>
+                    <th>Number</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for car in cars %}
+                <tr>
+                    <td>{{ car.model }}</td>
+                    <td>{{ car.year }}</td>
+                    <td>{{ car.color }}</td>
+                    <td>{{ car.number }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+        {% if services %}
+        <h2 class="mt-4">Services</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Address</th>
+                    <th>Payment Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for service in services %}
+                <tr>
+                    <td>{{ service.name }}</td>
+                    <td>{{ service.address }}</td>
+                    <td>{{ service.payment_details }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+        {% if rents %}
+        <h2 class="mt-4">Rents</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Client</th>
+                    <th>Car</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for rent in rents %}
+                <tr>
+                    <td>{{ rent.client.name }}</td>
+                    <td>{{ rent.car.model }}</td>
+                    <td>{{ rent.start }}</td>
+                    <td>{{ rent.end }}</td>
+                    <td>{{ rent.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+        {% if maintenances %}
+        <h2 class="mt-4">Maintenance</h2>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Car</th>
+                    <th>Service</th>
+                    <th>Start</th>
+                    <th>End</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for maintenance in maintenances %}
+                <tr>
+                    <td>{{ maintenance.car.model }}</td>
+                    <td>{{ maintenance.service.name }}</td>
+                    <td>{{ maintenance.start }}</td>
+                    <td>{{ maintenance.end }}</td>
+                    <td>{{ maintenance.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {%endif%}
+    </div>
+</body>
+</html>

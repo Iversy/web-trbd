@@ -4,6 +4,7 @@
 
 {% block content %}
 <h1>Список клиентов</h1>
+<a href="{% url 'client_table' %}" class="btn btn-primary">Таблица</a>
 <form method="get">
     <input type="text" name="q" placeholder="Поиск по имени" value="{{ request.GET.q }}">
     <button type="submit">Поиск</button>

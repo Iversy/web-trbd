@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Список автомобилей</title>
-</head>
-<body>
+
+{% extends 'base.html' %}
+{% block title %}Список автомобилей{% endblock %}
+
+{% block content %}
     <h1>Список автомобилей</h1>
-    <a href="{% url 'car_create' %}">Создать новый автомобиль</a>
+    <a href="{% url 'car_table' %}" class="btn btn-primary">Таблица</a>
     <form method="get">
-    <input type="text" name="q" placeholder="Поиск автомобилей" value="{{ request.GET.q }}">
-    <button type="submit">Поиск</button>
-</form>
+        <input type="text" name="q" placeholder="Поиск автомобилей" value="{{ request.GET.q }}">
+        <button type="submit">Поиск</button>
+    </form>
+    <a href="{% url 'car_create' %}">Создать новый автомобиль</a>
     <ul>
         {% for car in cars %}
             <li>
@@ -22,5 +21,4 @@
         {% endfor %}
     </ul>
     <a href="{% url 'home' %}">Назад</a>
-</body>
-</html>
+{%endblock%}

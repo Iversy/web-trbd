@@ -28,4 +28,12 @@ urlpatterns = [
     path('maintenances/create/', maintenance_create, name='maintenance_create'),
     path('maintenances/update/<int:pk>/', maintenance_update, name='maintenance_update'),
     path('maintenances/delete/<int:pk>/', maintenance_delete, name='maintenance_delete'),
+    
+    path('clients/table/', client_table, name='client_table'),
+    path('rents/table/', rent_table, name='rent_table'),
+    path('services/table/', service_table, name='service_table'),
+    path('cars/table/', car_table, name='car_table'),
+    path('maintenances/table/', maintenance_table, name='maintenance_table'),
+    path('megatable/', all_data_list, name='all_data_list'),
 ]
+

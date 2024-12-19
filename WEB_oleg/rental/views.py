@@ -8,6 +8,66 @@ from .utils import get_all_urls
 import csv
 from django.http import HttpResponse
 
+def client_table(request):
+    clients = Client.objects.all()
+    context = {
+        'clients': clients,
+    }
+
+    return render(request, 'all_data_list.html', context)
+    
+def car_table(request):
+    cars = Car.objects.all()
+    context = {
+        'cars': cars,
+    }
+
+    return render(request, 'all_data_list.html', context)
+    
+def rent_table(request):
+    rents = Rent.objects.all()
+    context = {
+        'rents': rents,
+    }
+
+    return render(request, 'all_data_list.html', context)
+    
+def service_table(request):
+    services = Service.objects.all()
+    context = {
+        'services': services,
+    }
+
+    return render(request, 'all_data_list.html', context)
+    
+def maintenance_table(request):
+    maintenances = Maintenance.objects.all()
+    context = {
+        'maintenances': maintenances,
+    }
+
+    return render(request, 'all_data_list.html', context)
+    
+
+
+
+def all_data_list(request):
+    clients = Client.objects.all()
+    cars = Car.objects.all()
+    services = Service.objects.all()
+    rents = Rent.objects.all()
+    maintenances = Maintenance.objects.all()
+    
+    context = {
+        'clients': clients,
+        'cars': cars,
+        'services': services,
+        'rents': rents,
+        'maintenances': maintenances,
+    }
+    
+    return render(request, 'all_data_list.html', context)
+
 
 def home(request):
     return render(request, 'index.html')

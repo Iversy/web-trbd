@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <title>Список услуг</title>
-</head>
-<body>
+
+{% extends 'base.html' %}
+{% block title %}Список услуг{% endblock %}
+
+{% block content %}
     <h1>Список услуг</h1>
-    <a href="{% url 'service_create' %}">Создать новую услугу</a>
-    <form method="get">
+<a href="{% url 'service_table' %}" class="btn btn-primary">Таблица</a>
+<form method="get">
     <input type="text" name="q" placeholder="Поиск услуг" value="{{ request.GET.q }}">
     <button type="submit">Поиск</button>
 </form>
+<a href="{% url 'service_create' %}">Создать новую услугу</a>
     <ul>
         {% for service in services %}
             <li>
@@ -22,5 +21,4 @@
         {% endfor %}
     </ul>
     <a href="{% url 'home' %}">Назад</a>
-</body>
-</html>
+{%endblock%}
