@@ -75,17 +75,9 @@ WSGI_APPLICATION = 'WEB_oleg.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+from .databases import DATABASES
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django_pg8000',
-        'NAME': 'boris',
-        'USER': 'postgres',
-        'PASSWORD': 'cisco',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
+
 
 
 # Password validation
