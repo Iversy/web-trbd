@@ -46,6 +46,34 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-bootstrap3"
+version = "24.3"
+description = "Bootstrap 3 for Django"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django_bootstrap3-24.3-py3-none-any.whl", hash = "sha256:65bbc34a85002e41923d3ba544febbcacfdc91d39186f284fc6748fad43909fa"},
+    {file = "django_bootstrap3-24.3.tar.gz", hash = "sha256:e3d85ed48c131ed3535cb7dbad760275473052f18470b3fc060018cb21d229e0"},
+]
+
+[package.dependencies]
+Django = ">=4.2"
+
+[[package]]
+name = "django-filter"
+version = "24.3"
+description = "Django-filter is a reusable Django application for allowing users to filter querysets dynamically."
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "django_filter-24.3-py3-none-any.whl", hash = "sha256:c4852822928ce17fb699bcfccd644b3574f1a2d80aeb2b4ff4f16b02dd49dc64"},
+    {file = "django_filter-24.3.tar.gz", hash = "sha256:d8ccaf6732afd21ca0542f6733b11591030fa98669f8d15599b358e24a2cd9c3"},
+]
+
+[package.dependencies]
+Django = ">=4.2"
+
+[[package]]
 name = "django-pg8000"
 version = "0.0.5"
 description = "A Django database backend for pg8000"
@@ -61,6 +89,23 @@ django = "*"
 pg8000 = ">=1.30.4"
 python-dateutil = "*"
 pytz = "*"
+
+[[package]]
+name = "django-tables2"
+version = "2.7.0"
+description = "Table/data-grid framework for Django"
+optional = false
+python-versions = "*"
+files = [
+    {file = "django-tables2-2.7.0.tar.gz", hash = "sha256:4113fcc575eb438a12e83a4d4ea01452e4800d970e8bdd0e4122ac171af1900d"},
+    {file = "django_tables2-2.7.0-py2.py3-none-any.whl", hash = "sha256:99e06d966ca8ac69fd74092eb45c79a280dd5ca0ccb81395d96261f62128e1af"},
+]
+
+[package.dependencies]
+Django = ">=3.2"
+
+[package.extras]
+tablib = ["tablib"]
 
 [[package]]
 name = "pg8000"
@@ -156,4 +201,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "7eadb00a8d54177601b40d58a235c7e7e728198aa1e36c3bc8637579eba500b3"
+content-hash = "6d26cabfec47b4d4d0ed586e6fb0a2b3a6bd04e68ed234ce9255678aec562c8b"

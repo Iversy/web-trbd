@@ -3,11 +3,52 @@ import csv
 from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.views.generic import ListView
 
 from .forms import CarForm, ClientForm, MaintenanceForm, RentForm, ServiceForm
 from .models import Car, Client, Maintenance, Rent, Service
 from .utils import get_all_urls
 
+
+import django_tables2 as tables
+from django_filters.views import FilterView
+from django_tables2.views import SingleTableMixin
+from django_filters import FilterSet
+from django_tables2.utils import A
+
+
+class SimpleTable(tables.Table):
+    edit = tables.LinkColumn('client_update', text='Edit', args=[A('pk')],
+                             orderable=False, empty_values=())
+    delete = tables.LinkColumn('client_delete', text='Delete', args=[A('pk')],
+                             orderable=False, empty_values=())
+
+    class Meta:
+        model = Client
+
+
+class TableView(tables.SingleTableView):
+    table_class = SimpleTable
+    queryset = Client.objects.all()
+    template_name = "rental/oleg.html"
+    
+# class PersonListView(ListView):
+#     print("ХУУУЙ")
+#     model = Client
+#     template_name = 'tutorial/people.html'
+
+
+class PersonFilter(FilterSet):
+    class Meta:
+        model = Client
+        fields = {"name": ["exact", "contains"], "license": ["exact"]}
+
+class FilteredPersonListView(SingleTableMixin, FilterView):
+    table_class = SimpleTable
+    model = Client
+    template_name = "rental/oleg.html"
+
+    filterset_class = PersonFilter
 
 def client_table(request):
     clients = Client.objects.all()

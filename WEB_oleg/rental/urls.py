@@ -42,5 +42,7 @@ urlpatterns = [
     path('cars/table/', car_table, name='car_table'),
     path('maintenances/table/', maintenance_table, name='maintenance_table'),
     path('megatable/', all_data_list, name='all_data_list'),
+    
+    path("pepg/", FilteredPersonListView.as_view(), name="pepg"),
 ]
 
