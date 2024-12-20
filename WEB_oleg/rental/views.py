@@ -4,6 +4,8 @@ from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.generic import ListView
+from django.db import models
+
 
 from .forms import CarForm, ClientForm, MaintenanceForm, RentForm, ServiceForm
 from .models import Car, Client, Maintenance, Rent, Service
@@ -17,38 +19,49 @@ from django_filters import FilterSet
 from django_tables2.utils import A
 
 
-class SimpleTable(tables.Table):
-    edit = tables.LinkColumn('client_update', text='Edit', args=[A('pk')],
-                             orderable=False, empty_values=())
-    delete = tables.LinkColumn('client_delete', text='Delete', args=[A('pk')],
-                             orderable=False, empty_values=())
+def oleg_table(update, delete, _model):
+    class SimpleTable(tables.Table):
+        edit = tables.LinkColumn(update, text='Изменить', args=[A('pk')],
+                                orderable=False, empty_values=())
+        remove = tables.LinkColumn(delete, text='Удалить', args=[A('pk')],
+                                orderable=False, empty_values=())
 
-    class Meta:
-        model = Client
-
-
-class TableView(tables.SingleTableView):
-    table_class = SimpleTable
-    queryset = Client.objects.all()
-    template_name = "rental/oleg.html"
-    
-# class PersonListView(ListView):
-#     print("ХУУУЙ")
-#     model = Client
-#     template_name = 'tutorial/people.html'
+        class Meta:
+            model = _model
+    return SimpleTable
 
 
-class PersonFilter(FilterSet):
-    class Meta:
-        model = Client
-        fields = {"name": ["exact", "contains"], "license": ["exact"]}
+def oleg_filter(_model):
+    class ClientFilter(FilterSet):
+        class Meta:
+            model = _model
+            print(_model._meta.get_fields())
+            fields = {
+                name.name: ["contains"]
+                for name in _model._meta.get_fields()
+                if isinstance(name, (
+                    models.CharField,
+                    models.DateField,
+                    models.IntegerField,
+                ))
+            }
+    return ClientFilter
 
-class FilteredPersonListView(SingleTableMixin, FilterView):
-    table_class = SimpleTable
-    model = Client
-    template_name = "rental/oleg.html"
+def oleg_table_view(update, delete, _model):
+    class FilteredPersonListView(SingleTableMixin, FilterView):
+        table_class = oleg_table(update, delete, _model)
+        model = _model
+        template_name = "rental/oleg.html"
 
-    filterset_class = PersonFilter
+        filterset_class = oleg_filter(_model)
+
+        def get_context_data(self, *args, **kwargs):
+            context = super().get_context_data(*args, **kwargs)
+            # context['create_url'] = create
+            return context
+    return FilteredPersonListView
+
+
 
 def client_table(request):
     clients = Client.objects.all()
