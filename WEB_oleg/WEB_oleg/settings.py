@@ -78,15 +78,14 @@ WSGI_APPLICATION = 'WEB_oleg.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
+        'ENGINE': 'django_pg8000',
         'NAME': 'boris',
-        'USER': 'oleg',
+        'USER': 'postgres',
         'PASSWORD': 'cisco',
-        'HOST': 'localhost',
-        'PORT': '5433',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
     }
 }
-
 
 
 # Password validation
