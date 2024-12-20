@@ -4,7 +4,6 @@
 <h1>Таблицы</h1>
 <ul>
     <li><a href="{% url 'client_list' %}">Клиенты</a></li>
-    <li><a href="{% url 'home' %}">Главная</a></li>
     <li><a href="{% url 'car_list' %}">Машины</a></li>
     <li><a href="{% url 'service_list' %}">Автосервис</a></li>
     <li><a href="{% url 'rent_list' %}">Аренда машин</a></li>
@@ -13,10 +12,12 @@
 </ul>
 <h1>Отчеты</h1>
 <ul>
-<li><a href="{% url 'rent_report' %}">Отчет по аренде</a></li>
-<li><a href="{% url 'rent_report_csv' %}">Отчет по аренде в csv</a></li>
-<li><a href="{% url 'maintenance_report' %}">Отчет по обслуживаниям</a></li>
-<li><a href="{% url 'maintenance_report_csv' %}">Отчет по обслуживаниям в csv</a></li>
+<li><a href="{% url 'rent_report' %}">По аренде</a></li>
+<li><a href="{% url 'rent_report_csv' %}">По аренде в csv</a></li>
+<li><a href="{% url 'maintenance_report' %}">По обслуживаниям</a></li>
+<li><a href="{% url 'maintenance_report_csv' %}">По обслуживаниям в csv</a></li>
+<li><a href="{% url 'car_report' %}">По машинам</a></li>
+<li><a href="{% url 'car_report_csv' %}">По машинам в csv</a></li>
 </ul>
 {% endblock %}
 
