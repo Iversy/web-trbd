@@ -172,7 +172,7 @@ cython_debug/
 
 
 # Connection
-databases.py
+WEB_oleg/WEB_oleg/databases.py
 
 # Cache
 *.pyc
