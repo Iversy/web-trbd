@@ -1,12 +1,13 @@
-from django.shortcuts import render, redirect
-from .models import Client, Rent, Service, Maintenance, Car
-from .forms import ClientForm, CarForm, ServiceForm, MaintenanceForm, RentForm
+import csv
+
+from django.db.models import Count
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+
+from .forms import CarForm, ClientForm, MaintenanceForm, RentForm, ServiceForm
+from .models import Car, Client, Maintenance, Rent, Service
 from .utils import get_all_urls
 
-
-
-import csv
-from django.http import HttpResponse
 
 def client_table(request):
     query = request.GET.get('q') 
@@ -139,6 +140,62 @@ def client_delete(request, pk):
         return redirect('client_list')
     return render(request, 'rental/client_confirm_delete.html', {'client': client})
 
+
+def car_report(request):
+    cars_with_counts = Car.objects.annotate(
+        rent_count=Count('rent'),
+        maintenance_count=Count('maintenance')
+    ).values('model', 'year', 'color', 'number', 'rent_count', 'maintenance_count')
+    return render(request, 'rental/car_report.html', {'cars_with_counts': cars_with_counts})
+
+
+def car_report_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="car_report.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Модель', 'Год', 'Цвет',
+                    'Номер', 'Число аренд', 'Число обслуживаний'])
+
+    cars_with_counts = Car.objects.annotate(
+        rent_count=Count('rent'),
+        maintenance_count=Count('maintenance')
+    ).values('model', 'year', 'color', 'number', 'rent_count', 'maintenance_count')
+    print(type(cars_with_counts))
+    print(type(cars_with_counts[0]))
+    for car in cars_with_counts:
+        writer.writerow([
+            car["model"],
+            car["year"],
+            car["color"],
+            car["number"],
+            car["rent_count"],
+            car["maintenance_count"],
+            ])
+
+    return response
+
+
+def maintenance_report(request):
+    # Получаем обслуживания с информацией о сервисе и автомобилях
+    maintenances = Maintenance.objects.select_related('service', 'car')
+    return render(request, 'rental/maintenance_report.html', {'maintenances': maintenances})
+
+
+def maintenance_report_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="maintenance_report.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Автомобиль', 'Сервис', 'Дата начала',
+                    'Дата окончания', 'Цена'])
+
+    maintances = Maintenance.objects.select_related('car', 'service')
+    for maintance in maintances:
+        writer.writerow([maintance.car.model, maintance.service.name, maintance.start, maintance.end, maintance.price])
+
+    return response
+
 def rent_report(request):
     rents = Rent.objects.select_related('client', 'car')  # Получаем аренды с информацией о клиентах и автомобилях
     return render(request, 'rental/rent_report.html', {'rents': rents})
@@ -146,7 +203,7 @@ def rent_report(request):
 
 def rent_report_csv(request):
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="rent_report.csv"'
+    response['Content-Disposition'] = 'attachment; filename="rent_report.csv"' 
 
     writer = csv.writer(response)
     writer.writerow(['Клиент', 'Автомобиль', 'Дата начала', 'Дата окончания', 'Цена'])

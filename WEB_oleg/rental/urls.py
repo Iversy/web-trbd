@@ -10,6 +10,8 @@ urlpatterns = [
     path('rent/report/csv/', rent_report_csv, name='rent_report_csv'),
     path('', home, name='home'),
     path('cars/', car_list, name='car_list'),
+    path('cars/report/', car_report, name='car_report'),
+    path('cars/report/csv', car_report_csv, name='car_report_csv'),
     path('cars/create/', car_create, name='car_create'),
     path('cars/update/<int:pk>/', car_update, name='car_update'),
     path('cars/delete/<int:pk>/', car_delete, name='car_delete'),
@@ -28,6 +30,11 @@ urlpatterns = [
     path('maintenances/create/', maintenance_create, name='maintenance_create'),
     path('maintenances/update/<int:pk>/', maintenance_update, name='maintenance_update'),
     path('maintenances/delete/<int:pk>/', maintenance_delete, name='maintenance_delete'),
+    path('maintenances/report/',
+         maintenance_report, name='maintenance_report'),
+    path('maintenances/report/csv/',
+         maintenance_report_csv, name='maintenance_report_csv'),
+
     
     path('clients/table/', client_table, name='client_table'),
     path('rents/table/', rent_table, name='rent_table'),

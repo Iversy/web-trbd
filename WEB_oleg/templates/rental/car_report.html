@@ -1,0 +1,27 @@
+<h1>Отчет по обслуживаниям</h1>
+<a href="{% url 'car_report_csv' %}">Скачать отчет в формате CSV</a>
+<table>
+    <thead>
+        <tr>
+            <th>Модель</th>
+            <th>Год</th>
+            <th>Цвет</th>
+            <th>Номер</th>
+            <th>Число аренд</th>
+            <th>Число обслуживаний</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for car in cars_with_counts %}
+        <tr>
+            <td>{{ car.model }}</td>
+            <td>{{ car.year }}</td>
+            <td>{{ car.color }}</td>
+            <td>{{ car.number }}</td>
+            <td>{{ car.rent_count }}</td>
+            <td>{{ car.maintenance_count }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'home' %}">Назад</a>
