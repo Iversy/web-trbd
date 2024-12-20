@@ -16,11 +16,22 @@ def validate_number_plate(value):
         raise ValidationError('Неправильный формат номера. Формат: "A 123 AB 12" или "A 123 AB 123".')
 
 
+
+def validate_ru_phone_number(value):
+    pattern = r'^\+7 \d{3} \d{3}-\d{2}-\d{2}$'
+    if not re.match(pattern, value):
+        raise ValidationError('Invalid phone number format. Expected format: "+7 123 456-78-90".')
+def validate_license(value):
+    pattern = r'^\d{2} \d{2} \d{6}$'
+    if not re.match(pattern, value):
+        raise ValidationError('Invalid license format. Expected format: "12 34 567890".')
+
+
 class Client(models.Model):
     name = models.CharField(max_length=255)
-    license = models.CharField(max_length=255)
+    license = models.CharField(max_length=255, validators=[validate_license])
     birthday = models.DateField()
-    phone = models.CharField(max_length=20)
+    phone = models.CharField(max_length=20, validators=[validate_ru_phone_number])
     def __str__(self):
         return self.name
 
