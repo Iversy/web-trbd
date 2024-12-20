@@ -1,0 +1,25 @@
+<h1>Отчет по обслуживаниям</h1>
+<a href="{% url 'maintenance_report_csv' %}">Скачать отчет в формате CSV</a>
+<table>
+    <thead>
+        <tr>
+            <th>Автомобиль</th>
+            <th>Сервис</th>
+            <th>Дата начала</th>
+            <th>Дата окончания</th>
+            <th>Цена</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for maintenance in maintenances %}
+        <tr>
+            <td>{{ maintenance.car.model }}</td>
+            <td>{{ maintenance.service.name }}</td>
+            <td>{{ maintenance.start }}</td>
+            <td>{{ maintenance.end }}</td>
+            <td>{{ maintenance.price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'client_list' %}">Назад к списку клиентов</a>

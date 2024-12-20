@@ -108,6 +108,26 @@ def client_delete(request, pk):
         return redirect('client_list')
     return render(request, 'rental/client_confirm_delete.html', {'client': client})
 
+def maintenance_report(request):
+    # Получаем обслуживания с информацией о сервисе и автомобилях
+    maintenances = Maintenance.objects.select_related('service', 'car')
+    return render(request, 'rental/maintenance_report.html', {'maintenances': maintenances})
+
+
+def maintenance_report_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="maintenance_report.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Автомобиль', 'Сервис', 'Дата начала',
+                    'Дата окончания', 'Цена'])
+
+    maintances = Maintenance.objects.select_related('car', 'service')
+    for maintance in maintances:
+        writer.writerow([maintance.car.model, maintance.service.name, maintance.start, maintance.end, maintance.price])
+
+    return response
+
 def rent_report(request):
     rents = Rent.objects.select_related('client', 'car')  # Получаем аренды с информацией о клиентах и автомобилях
     return render(request, 'rental/rent_report.html', {'rents': rents})
@@ -115,7 +135,7 @@ def rent_report(request):
 
 def rent_report_csv(request):
     response = HttpResponse(content_type='text/csv')
-    response['Content-Disposition'] = 'attachment; filename="rent_report.csv"'
+    response['Content-Disposition'] = 'attachment; filename="rent_report.csv"' 
 
     writer = csv.writer(response)
     writer.writerow(['Клиент', 'Автомобиль', 'Дата начала', 'Дата окончания', 'Цена'])
