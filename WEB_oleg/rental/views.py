@@ -24,7 +24,7 @@ def client_table(request):
 def car_table(request):
     query = request.GET.get('q') 
     if query:
-        cars = Car.objects.filter(name__icontains=query)
+        cars = Car.objects.filter(model__icontains=query)
     else:
         cars = Car.objects.all()
     context = {
@@ -36,7 +36,7 @@ def car_table(request):
 def rent_table(request):
     query = request.GET.get('q') 
     if query:
-        rents = Rent.objects.filter(name__icontains=query)
+        rents = Rent.objects.filter(client__name__icontains=query)
     else:
         rents = Rent.objects.all()
     context = {
@@ -60,7 +60,7 @@ def service_table(request):
 def maintenance_table(request):
     query = request.GET.get('q') 
     if query:
-        maintenances = Maintenance.objects.filter(name__icontains=query)
+        maintenances = Maintenance.objects.filter(car__model__icontains=query)
     else:
         maintenances = Maintenance.objects.all()
 
@@ -78,11 +78,10 @@ def all_data_list(request):
     query = request.GET.get('q') 
     if query:
         clients = Client.objects.filter(name__icontains=query)
-        cars = Car.objects.filter(name__icontains=query)
+        cars = Car.objects.filter(model__icontains=query)
         services = Service.objects.filter(name__icontains=query)
-        rents = Rent.objects.filter(name__icontains=query)
-        maintenances = Maintenance.objects.filter(name__icontains=query)
-        maintenances = Maintenance.objects.filter(name__icontains=query)
+        rents = Rent.objects.filter(client__name__icontains=query)
+        maintenances = Maintenance.objects.filter(car__model__icontains=query)
     else:
         clients = Client.objects.all()
         cars = Car.objects.all()
