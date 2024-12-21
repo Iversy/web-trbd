@@ -19,11 +19,17 @@ from django_filters import FilterSet, CharFilter
 from django_tables2.utils import A
 
 
+def remove_contains_at_end(s):
+    if s.endswith('__contains'):
+        return s[:-len('__contains')]
+    return s
+
+
 def oleg_table(update, delete, _model):
     class SimpleTable(tables.Table):
-        edit = tables.LinkColumn(update, text='Изменить', args=[A('pk')],
+        Изменить = tables.LinkColumn(update, text='Изменить', args=[A('pk')],
                                 orderable=False, empty_values=())
-        remove = tables.LinkColumn(delete, text='Удалить', args=[A('pk')],
+        Удалить = tables.LinkColumn(delete, text='Удалить', args=[A('pk')],
                                 orderable=False, empty_values=())
 
         class Meta:
@@ -32,8 +38,23 @@ def oleg_table(update, delete, _model):
 
 
 class RentFilter(FilterSet):
-    client__name = CharFilter(lookup_expr='icontains')
-    car__model = CharFilter(lookup_expr='icontains')
+    client__name = CharFilter(lookup_expr='icontains', label="ФИО клиена")
+    car__model = CharFilter(lookup_expr='icontains', label="Модель")
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.filters:
+            match field_name:
+                case "client__name":
+                    continue
+                case "car__model":
+                    continue
+            self.filters[field_name].label = self.get_verbose_name(
+                field_name)
+    def get_verbose_name(self, field_name):
+        print(field_name, remove_contains_at_end(field_name))
+        field = self._meta.model._meta.get_field(remove_contains_at_end(field_name))
+        return field.verbose_name.capitalize()
 
     class Meta:
         _model = Rent
@@ -53,9 +74,27 @@ class RentFilter(FilterSet):
         
 
 class MaintenanceFilter(FilterSet):
-    service__name = CharFilter(lookup_expr='icontains')
-    car__model = CharFilter(lookup_expr='icontains')
+    service__name = CharFilter(lookup_expr='icontains', label="Сервис")
+    car__model = CharFilter(lookup_expr='icontains', label="Модель")
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.filters:
+            match field_name:
+                case "service__name":
+                    continue
+                case "car__model":
+                    continue
+            self.filters[field_name].label = self.get_verbose_name(
+                field_name)
+
+
+    def get_verbose_name(self, field_name):
+        print(field_name, remove_contains_at_end(field_name))
+        field = self._meta.model._meta.get_field(
+            remove_contains_at_end(field_name))
+        return field.verbose_name.capitalize()
+    
     class Meta:
         _model = Maintenance
         model = _model
@@ -75,6 +114,16 @@ class MaintenanceFilter(FilterSet):
 
 def oleg_filter(_model):
     class ClientFilter(FilterSet):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            for field_name in self.filters:
+                self.filters[field_name].label = self.get_verbose_name(
+                    field_name)
+        def get_verbose_name(self, field_name):
+            print(field_name, remove_contains_at_end(field_name))
+            field = self._meta.model._meta.get_field(remove_contains_at_end(field_name))
+            return field.verbose_name.capitalize()
+
         class Meta:
             model = _model
             print(_model._meta.get_fields())
