@@ -1,8 +1,13 @@
 import re
+from datetime import date
+
 from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
+def validate_price(value):
+    if value < 0:
+        raise ValidationError('В минус не работаем, цена только положительная.')
 
 def validate_year(value):
     if value < 1672:
@@ -39,7 +44,11 @@ class Client(models.Model):
                              validators=[validate_ru_phone_number])
     def __str__(self):
         return self.name
-
+    def clean(self):
+        super().clean()
+        if self.birthday > date.today():
+            raise ValidationError('Привет человек из будущего!')
+        
 class Car(models.Model):
     model = models.CharField(max_length=255,
                              verbose_name="Модель",)
@@ -73,7 +82,8 @@ class Rent(models.Model):
                             verbose_name="Машина",)
     start = models.DateTimeField(verbose_name="Начало")
     end = models.DateTimeField(verbose_name="Конец")
-    price = models.FloatField(verbose_name="Стоимость")
+    price = models.FloatField(verbose_name="Стоимость", 
+                              validators=[validate_price])
 
     def clean(self):
         super().clean()
@@ -94,7 +104,8 @@ class Maintenance(models.Model):
                                 verbose_name="Сервис",)
     start = models.DateTimeField(verbose_name="Начало")
     end = models.DateTimeField(verbose_name="Конец")
-    price = models.FloatField(verbose_name="Стоимость")
+    price = models.FloatField(verbose_name="Стоимость",
+                              validators=[validate_price])
 
     def clean(self):
         super().clean()

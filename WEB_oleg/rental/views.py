@@ -18,6 +18,7 @@ from django_tables2.views import SingleTableMixin
 from django_filters import FilterSet, CharFilter
 from django_tables2.utils import A
 
+import threading
 
 def remove_contains_at_end(s):
     if s.endswith('__contains'):
@@ -252,11 +253,11 @@ def home(request):
     return render(request, 'index.html')
 
 def client_list(request):
-    query = request.GET.get('q')  # Получаем параметр фильтрации из URL
+    query = request.GET.get('q')  
     if query:
-        clients = Client.objects.filter(name__icontains=query)  # Фильтруем по имени
+        clients = Client.objects.filter(name__icontains=query)
     else:
-        clients = Client.objects.all()  # Получаем всех клиентов
+        clients = Client.objects.all()
     return render(request, 'rental/client_list.html', {'clients': clients})
 
 def client_create(request):
@@ -295,30 +296,37 @@ def car_report(request):
     ).values('model', 'year', 'color', 'number', 'rent_count', 'maintenance_count')
     return render(request, 'rental/car_report.html', {'cars_with_counts': cars_with_counts})
 
+import threading
+
+
 
 def car_report_csv(request):
     response = HttpResponse(content_type='text/csv')
     response['Content-Disposition'] = 'attachment; filename="car_report.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['Модель', 'Год', 'Цвет',
-                    'Номер', 'Число аренд', 'Число обслуживаний'])
+    def write(writer):
+        writer.writerow(['Модель', 'Год', 'Цвет',
+                        'Номер', 'Число аренд', 'Число обслуживаний'])
 
-    cars_with_counts = Car.objects.annotate(
-        rent_count=Count('rent'),
-        maintenance_count=Count('maintenance')
-    ).values('model', 'year', 'color', 'number', 'rent_count', 'maintenance_count')
-    print(type(cars_with_counts))
-    print(type(cars_with_counts[0]))
-    for car in cars_with_counts:
-        writer.writerow([
-            car["model"],
-            car["year"],
-            car["color"],
-            car["number"],
-            car["rent_count"],
-            car["maintenance_count"],
-            ])
+        cars_with_counts = Car.objects.annotate(
+            rent_count=Count('rent'),
+            maintenance_count=Count('maintenance')
+        ).values('model', 'year', 'color', 'number', 'rent_count', 'maintenance_count')
+        # print(type(cars_with_counts))
+        # print(type(cars_with_counts[0]))
+        for car in cars_with_counts:
+            writer.writerow([
+                car["model"],
+                car["year"],
+                car["color"],
+                car["number"],
+                car["rent_count"],
+                car["maintenance_count"],
+                ])
+    thread = threading.Thread(target=write, args=(writer,))
+    thread.start()
+    thread.join()
 
     return response
 
@@ -334,12 +342,17 @@ def maintenance_report_csv(request):
     response['Content-Disposition'] = 'attachment; filename="maintenance_report.csv"'
 
     writer = csv.writer(response)
-    writer.writerow(['Автомобиль', 'Сервис', 'Дата начала',
-                    'Дата окончания', 'Цена'])
+    def write(writer):
+        writer.writerow(['Автомобиль', 'Сервис', 'Дата начала',
+                        'Дата окончания', 'Цена'])
 
-    maintances = Maintenance.objects.select_related('car', 'service')
-    for maintance in maintances:
-        writer.writerow([maintance.car.model, maintance.service.name, maintance.start, maintance.end, maintance.price])
+        maintances = Maintenance.objects.select_related('car', 'service')
+        for maintance in maintances:
+            writer.writerow([maintance.car.model, maintance.service.name, maintance.start, maintance.end, maintance.price])
+
+    thread = threading.Thread(target=write, args=(writer,))
+    thread.start()
+    thread.join()
 
     return response
 
@@ -353,12 +366,15 @@ def rent_report_csv(request):
     response['Content-Disposition'] = 'attachment; filename="rent_report.csv"' 
 
     writer = csv.writer(response)
-    writer.writerow(['Клиент', 'Автомобиль', 'Дата начала', 'Дата окончания', 'Цена'])
+    def write(writer):
+        writer.writerow(['Клиент', 'Автомобиль', 'Дата начала', 'Дата окончания', 'Цена'])
 
-    rents = Rent.objects.select_related('client', 'car')
-    for rent in rents:
-        writer.writerow([rent.client.name, rent.car.model, rent.start, rent.end, rent.price])
-
+        rents = Rent.objects.select_related('client', 'car')
+        for rent in rents:
+            writer.writerow([rent.client.name, rent.car.model, rent.start, rent.end, rent.price])
+    thread = threading.Thread(target=write, args=(writer,))
+    thread.start()
+    thread.join()
     return response
 
 def car_list(request):
