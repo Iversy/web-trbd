@@ -41,8 +41,11 @@ def oleg_filter(_model):
                 for name in _model._meta.get_fields()
                 if isinstance(name, (
                     models.CharField,
+                    models.TextField,
                     models.DateField,
                     models.IntegerField,
+                    models.FloatField,
+                    # models.ForeignKey,
                 ))
             }
     return ClientFilter
