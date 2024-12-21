@@ -10,4 +10,60 @@
     <button type="submit">Сохранить</button>
 </form>
 <a href="{% url 'car_list' %}">Отмена</a>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const numberInput = document.getElementById('id_number');
+
+        numberInput.addEventListener('input', function() {
+            // Convert to uppercase
+            this.value = this.value.toUpperCase();
+
+            // Remove invalid characters
+            this.value = this.value.replace(/[^АВЕКМНОРСТУХ0-9 ]/g, ''); // Allow only valid characters
+
+            // Format the input
+            const parts = this.value.split(' ');
+            let formatted = '';
+
+            // Ensure the first part is a letter followed by a space and then three digits
+            if (parts[0].length === 1 && /^[АВЕКМНОРСТУХ]$/.test(parts[0])) {
+                formatted += parts[0] + ' ';
+            }
+
+            if (parts[1] && /^\d{0,3}$/.test(parts[1])) {
+                formatted += parts[1];
+            }
+            if (parts[1] && parts[1].length == 3){
+                formatted += ' ';
+            }
+
+            // Add space after the first part
+            //if (formatted.length > 0 && formatted[formatted.length - 1] !== ' ' && parts.length > 1) {
+            //    formatted += ' ';
+            //}
+
+            // Add the next two letters and digits
+            if (parts[2] && /^[АВЕКМНОРСТУХ]{0,2}$/.test(parts[2])) {
+                formatted += parts[2];
+            }
+            if (parts[2] && parts[2].length == 2){
+                formatted += ' ';
+            }
+
+
+            if (parts[3] && /^\d{0,3}$/.test(parts[3])) {
+                formatted += parts[3];
+            }
+            if (parts[3] && parts[3].length > 3){
+                formatted += parts[3].slice(0,3);
+            }
+            this.value = formatted; // Set the formatted value
+            if (this.value.lenght > 12) {
+                this.value = this.value.slice(0,12);
+            }
+
+        });
+    });
+</script>
 {% endblock %}
