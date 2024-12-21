@@ -15,7 +15,7 @@ from .utils import get_all_urls
 import django_tables2 as tables
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
-from django_filters import FilterSet
+from django_filters import FilterSet, CharFilter
 from django_tables2.utils import A
 
 
@@ -29,6 +29,48 @@ def oleg_table(update, delete, _model):
         class Meta:
             model = _model
     return SimpleTable
+
+
+class RentFilter(FilterSet):
+    client__name = CharFilter(lookup_expr='icontains')
+    car__model = CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        _model = Rent
+        model = _model
+        print(_model._meta.get_fields())
+        fields = {
+            name.name: ["contains"]
+            for name in _model._meta.get_fields()
+            if isinstance(name, (
+                models.CharField,
+                models.TextField,
+                models.DateField,
+                models.IntegerField,
+                models.FloatField,
+            ))
+        }
+        
+
+class MaintenanceFilter(FilterSet):
+    service__name = CharFilter(lookup_expr='icontains')
+    car__model = CharFilter(lookup_expr='icontains')
+
+    class Meta:
+        _model = Maintenance
+        model = _model
+        print(_model._meta.get_fields())
+        fields = {
+            name.name: ["contains"]
+            for name in _model._meta.get_fields()
+            if isinstance(name, (
+                models.CharField,
+                models.TextField,
+                models.DateField,
+                models.IntegerField,
+                models.FloatField,
+            ))
+        }
 
 
 def oleg_filter(_model):
@@ -50,13 +92,13 @@ def oleg_filter(_model):
             }
     return ClientFilter
 
-def oleg_table_view(update, delete, _model):
+def oleg_table_view(update, delete, _model, filter=None):
     class FilteredPersonListView(SingleTableMixin, FilterView):
         table_class = oleg_table(update, delete, _model)
         model = _model
         template_name = "rental/oleg.html"
 
-        filterset_class = oleg_filter(_model)
+        filterset_class = filter or oleg_filter(_model)
 
         def get_context_data(self, *args, **kwargs):
             context = super().get_context_data(*args, **kwargs)

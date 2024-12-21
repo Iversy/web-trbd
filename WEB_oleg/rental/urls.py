@@ -38,7 +38,8 @@ urlpatterns = [
     path('rents/', oleg_table_view(
          "rent_update",
          "rent_delete",
-         Rent).as_view(),
+         Rent,
+         RentFilter).as_view(),
          name='rent_list'),
 #     path('rents/', rent_list, name='rent_list'),
     path('rents/create/', rent_create, name='rent_create'),
@@ -52,7 +53,9 @@ urlpatterns = [
     path('maintenances/', oleg_table_view(
          "maintenance_update",
          "maintenance_delete",
-         Maintenance).as_view(),
+         Maintenance,
+         MaintenanceFilter,
+         ).as_view(),
          name='maintenance_list'),
 #     path('maintenances/', maintenance_list, name='maintenance_list'),
     path('maintenances/create/', maintenance_create, name='maintenance_create'),
