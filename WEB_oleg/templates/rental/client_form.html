@@ -22,5 +22,32 @@
             });
         });
     </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const phoneInput = document.getElementById('id_phone');
+
+        phoneInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9+ ]/g, ''); 
+            if (this.value.length > 1) {
+                this.value = this.value.substring(0, 16); 
+            }
+            if (this.value.startsWith('+7') || this.value.startsWith('8')) {
+                this.value = this.value.replace(/(\+7|8)\s*(\d{3})\s*(\d{3})\s*(\d{2})\s*(\d{2})/, '+7 $2 $3-$4-$5');
+            }
+        });
+        const licenseInput = document.getElementById('id_license');
+
+        licenseInput.addEventListener('input', function() {
+            this.value = this.value.replace(/[^0-9 ]/g, ''); 
+
+            const parts = this.value.split(' ').join('').match(/(\d{0,2})(\d{0,2})(\d{0,6})/);
+            if (parts) {
+                this.value = `${parts[1]} ${parts[2]} ${parts[3]}`.trim();
+            }
+        });
+    });
+</script>
+
 </body>
 </html>
