@@ -3,6 +3,9 @@ from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
+def validate_price(value):
+    if value < 0:
+        raise ValidationError('В минус не работаем, цена только положительная.')
 
 def validate_year(value):
     if value < 1672:
@@ -55,7 +58,7 @@ class Rent(models.Model):
     car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True)          
     start = models.DateTimeField()
     end = models.DateTimeField()
-    price = models.FloatField()
+    price = models.FloatField(validators=[validate_price])
 
     def clean(self):
         super().clean()
@@ -69,7 +72,7 @@ class Maintenance(models.Model):
     service = models.ForeignKey(Service, on_delete=models.SET_NULL, null=True)  
     start = models.DateTimeField()
     end = models.DateTimeField()
-    price = models.FloatField()
+    price = models.FloatField(validators=[validate_price])
 
     def clean(self):
         super().clean()
