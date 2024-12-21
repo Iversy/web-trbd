@@ -1,5 +1,5 @@
 import re
-from datetime import date
+from datetime import date, timedelta
 
 from django.db import models
 from django.utils import timezone
@@ -48,6 +48,8 @@ class Client(models.Model):
         super().clean()
         if self.birthday > date.today():
             raise ValidationError('Привет человек из будущего!')
+        if self.birthday > date.today() - timedelta(days=365*21):
+            raise ValidationError("Не дорос ещё кататься на машинке.")
         
 class Car(models.Model):
     model = models.CharField(max_length=255,
