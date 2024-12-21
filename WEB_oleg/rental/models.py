@@ -1,4 +1,6 @@
 import re
+from datetime import date
+
 from django.db import models
 from django.utils import timezone
 from django.core.exceptions import ValidationError
@@ -39,7 +41,7 @@ class Client(models.Model):
         return self.name
     def clean(self):
         super().clean()
-        if self.birthday > timezone.now():
+        if self.birthday > date.today():
             raise ValidationError('Привет человек из будущего!')
         
 class Car(models.Model):
