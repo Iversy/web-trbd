@@ -34,7 +34,13 @@ urlpatterns = [
     path('services/update/<int:pk>/', service_update, name='service_update'),
     path('services/delete/<int:pk>/', service_delete, name='service_delete'),
 
-    path('rents/', rent_list, name='rent_list'),
+
+    path('rents/', oleg_table_view(
+         "rent_update",
+         "rent_delete",
+         Rent).as_view(),
+         name='rent_list'),
+#     path('rents/', rent_list, name='rent_list'),
     path('rents/create/', rent_create, name='rent_create'),
     path('rents/update/<int:pk>/', rent_update, name='rent_update'),
     path('rents/delete/<int:pk>/', rent_delete, name='rent_delete'),
@@ -42,7 +48,13 @@ urlpatterns = [
     path('rent/report/csv/', rent_report_csv, name='rent_report_csv'),
     path('', home, name='home'),
 
-    path('maintenances/', maintenance_list, name='maintenance_list'),
+
+    path('maintenances/', oleg_table_view(
+         "maintenance_update",
+         "maintenance_delete",
+         Maintenance).as_view(),
+         name='maintenance_list'),
+#     path('maintenances/', maintenance_list, name='maintenance_list'),
     path('maintenances/create/', maintenance_create, name='maintenance_create'),
     path('maintenances/update/<int:pk>/', maintenance_update, name='maintenance_update'),
     path('maintenances/delete/<int:pk>/', maintenance_delete, name='maintenance_delete'),
