@@ -3,10 +3,64 @@ import csv
 from django.db.models import Count
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
+from django.views.generic import ListView
+from django.db import models
+
 
 from .forms import CarForm, ClientForm, MaintenanceForm, RentForm, ServiceForm
 from .models import Car, Client, Maintenance, Rent, Service
 from .utils import get_all_urls
+
+
+import django_tables2 as tables
+from django_filters.views import FilterView
+from django_tables2.views import SingleTableMixin
+from django_filters import FilterSet
+from django_tables2.utils import A
+
+
+def oleg_table(update, delete, _model):
+    class SimpleTable(tables.Table):
+        edit = tables.LinkColumn(update, text='Изменить', args=[A('pk')],
+                                orderable=False, empty_values=())
+        remove = tables.LinkColumn(delete, text='Удалить', args=[A('pk')],
+                                orderable=False, empty_values=())
+
+        class Meta:
+            model = _model
+    return SimpleTable
+
+
+def oleg_filter(_model):
+    class ClientFilter(FilterSet):
+        class Meta:
+            model = _model
+            print(_model._meta.get_fields())
+            fields = {
+                name.name: ["contains"]
+                for name in _model._meta.get_fields()
+                if isinstance(name, (
+                    models.CharField,
+                    models.DateField,
+                    models.IntegerField,
+                ))
+            }
+    return ClientFilter
+
+def oleg_table_view(update, delete, _model):
+    class FilteredPersonListView(SingleTableMixin, FilterView):
+        table_class = oleg_table(update, delete, _model)
+        model = _model
+        template_name = "rental/oleg.html"
+
+        filterset_class = oleg_filter(_model)
+
+        def get_context_data(self, *args, **kwargs):
+            context = super().get_context_data(*args, **kwargs)
+            # context['create_url'] = create
+            return context
+    return FilteredPersonListView
+
 
 
 def client_table(request):
