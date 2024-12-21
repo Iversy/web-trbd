@@ -37,7 +37,10 @@ class Client(models.Model):
     phone = models.CharField(max_length=20, validators=[validate_ru_phone_number])
     def __str__(self):
         return self.name
-
+    def clean(self):
+        super().clean()
+        if self.start > timezone.now():
+            raise ValidationError('Привет человек из будущего!')
 class Car(models.Model):
     model = models.CharField(max_length=255)
     year = models.IntegerField(validators=[validate_year])
