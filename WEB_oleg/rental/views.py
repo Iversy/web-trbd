@@ -159,11 +159,11 @@ def home(request):
     return render(request, 'index.html')
 
 def client_list(request):
-    query = request.GET.get('q')  # Получаем параметр фильтрации из URL
+    query = request.GET.get('q')  
     if query:
-        clients = Client.objects.filter(name__icontains=query)  # Фильтруем по имени
+        clients = Client.objects.filter(name__icontains=query)
     else:
-        clients = Client.objects.all()  # Получаем всех клиентов
+        clients = Client.objects.all()
     return render(request, 'rental/client_list.html', {'clients': clients})
 
 def client_create(request):
