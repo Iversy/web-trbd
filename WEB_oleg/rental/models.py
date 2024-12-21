@@ -28,34 +28,52 @@ def validate_license(value):
 
 
 class Client(models.Model):
-    name = models.CharField(max_length=255)
-    license = models.CharField(max_length=255, validators=[validate_license])
-    birthday = models.DateField()
-    phone = models.CharField(max_length=20, validators=[validate_ru_phone_number])
+    name = models.CharField(max_length=255,
+                            verbose_name="ФИО")
+    license = models.CharField(max_length=255,
+                               verbose_name="Права",
+                               validators=[validate_license])
+    birthday = models.DateField(verbose_name="Дата рождения")
+    phone = models.CharField(max_length=20,
+                             verbose_name="Телефон",
+                             validators=[validate_ru_phone_number])
     def __str__(self):
         return self.name
 
 class Car(models.Model):
-    model = models.CharField(max_length=255)
-    year = models.IntegerField(validators=[validate_year])
-    color = models.CharField(max_length=50)
-    number = models.CharField(max_length=20, validators=[validate_number_plate])
+    model = models.CharField(max_length=255,
+                             verbose_name="Модель",)
+    year = models.IntegerField(validators=[validate_year],
+                               verbose_name="Год выпуска",)
+    color = models.CharField(max_length=50,
+                             verbose_name="Цвет",)
+    number = models.CharField(max_length=20,
+                              verbose_name="Госномер",
+                              validators=[validate_number_plate])
     def __str__(self):
         return self.model
 
 class Service(models.Model):
-    name = models.CharField(max_length=255)
-    address = models.CharField(max_length=255)
-    payment_details = models.TextField()
+    name = models.CharField(max_length=255,
+                            verbose_name="Название",)
+    address = models.CharField(max_length=255,
+                               verbose_name="Адрес",)
+    payment_details = models.TextField(verbose_name="Реквизиты")
     def __str__(self):
         return self.name
 
 class Rent(models.Model):
-    client = models.ForeignKey(Client, on_delete=models.SET_NULL, null=True)  
-    car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True)          
-    start = models.DateTimeField()
-    end = models.DateTimeField()
-    price = models.FloatField()
+    client = models.ForeignKey(Client, 
+                               on_delete=models.SET_NULL, 
+                               null=True,
+                               verbose_name="Клиент",)
+    car = models.ForeignKey(Car, 
+                            on_delete=models.SET_NULL, 
+                            null=True,
+                            verbose_name="Машина",)
+    start = models.DateTimeField(verbose_name="Начало")
+    end = models.DateTimeField(verbose_name="Конец")
+    price = models.FloatField(verbose_name="Стоимость")
 
     def clean(self):
         super().clean()
@@ -64,12 +82,19 @@ class Rent(models.Model):
         if self.start > timezone.now() or self.end > timezone.now():
             raise ValidationError('Даты начала и окончания аренды не должны быть в будущем.')
 
+
 class Maintenance(models.Model):
-    car = models.ForeignKey(Car, on_delete=models.SET_NULL, null=True)          
-    service = models.ForeignKey(Service, on_delete=models.SET_NULL, null=True)  
-    start = models.DateTimeField()
-    end = models.DateTimeField()
-    price = models.FloatField()
+    car = models.ForeignKey(Car,
+                            on_delete=models.SET_NULL,
+                            null=True,
+                            verbose_name="Машина",)
+    service = models.ForeignKey(Service, 
+                                on_delete=models.SET_NULL, 
+                                null=True,
+                                verbose_name="Сервис",)
+    start = models.DateTimeField(verbose_name="Начало")
+    end = models.DateTimeField(verbose_name="Конец")
+    price = models.FloatField(verbose_name="Стоимость")
 
     def clean(self):
         super().clean()
