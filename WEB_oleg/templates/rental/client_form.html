@@ -32,8 +32,8 @@
             if (this.value.length > 1) {
                 this.value = this.value.substring(0, 16); 
             }
-            if (this.value.startsWith('+7') || this.value.startsWith('8')) {
-                this.value = this.value.replace(/(\+7|8)\s*(\d{3})\s*(\d{3})\s*(\d{2})\s*(\d{2})/, '+7 $2 $3-$4-$5');
+            if (this.value.startsWith('+7') || this.value.startsWith('8') || this.value.startsWith('7')) {
+                this.value = this.value.replace(/(\+7|8|7)\s*(\d{3})\s*(\d{3})\s*(\d{2})\s*(\d{2})/, '+7 $2 $3-$4-$5');
             }
         });
         const licenseInput = document.getElementById('id_license');
