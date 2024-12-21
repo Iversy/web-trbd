@@ -39,8 +39,9 @@ class Client(models.Model):
         return self.name
     def clean(self):
         super().clean()
-        if self.start > timezone.now():
+        if self.birthday > timezone.now():
             raise ValidationError('Привет человек из будущего!')
+        
 class Car(models.Model):
     model = models.CharField(max_length=255)
     year = models.IntegerField(validators=[validate_year])
